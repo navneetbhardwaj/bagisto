@@ -88,6 +88,59 @@ class ElasticSearchRepository
     }
 
     /**
+     * Get suggestions based on the query text.
+     */
+    public function searchByTerm(string $queryText)
+    {
+        $term = $queryText;
+        $suggestionTerm = $this->getSuggestions($term);
+
+        $results = ElasticSearch::search([
+            'index' => $this->getIndexName(),
+            'body'  => [
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            [
+                                'multi_match' => [
+                                    'query'  => $suggestionTerm ?? $term,
+                                    'fields' => [
+                                        'name',
+                                        'name._2gram',
+                                        'name._3gram',
+                                    ],
+                                    'type' => 'bool_prefix',
+                                ],
+                            ],
+                        ],
+                        'filter' => [
+                            [
+                                'term' => [
+                                    'visible_individually' => 1,
+                                ],
+                            ],
+                            [
+                                'term' => [
+                                    'status' => 1,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'highlight' => [
+                    'fields' => [
+                        'name' => [
+                            'matched_fields' => ['name._index_prefix'],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        return $results['hits']['hits'] ?? [];
+    }
+
+    /**
      * Prepare filters for search results.
      */
     public function getFilters(array $params): array

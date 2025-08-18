@@ -2688,4 +2688,51 @@ return [
             ],
         ],
     ],
+    [
+        'key'  => 'general.search',
+        'name' => 'Search Suggestions',
+        'info' => 'Set Search Suggestions settings',
+        'icon' => 'settings/store.svg',
+        'sort' => 10,
+    ], [
+        'key'    => 'general.search.settings',
+        'name'   => 'Search Suggestions Settings',
+        'info'   => 'Set Search Suggestions settings',
+        'sort'   => 1,
+        'fields' => [
+            [
+                'name'          => 'status',
+                'title'         => 'Enable Search Suggestions',
+                'type'          => 'boolean',
+                'channel_based' => true,
+            ], [
+                'name'          => 'min_search_terms',
+                'title'         => 'Minimum Characters to Trigger',
+                'type'          => 'text',
+                'validation'    => 'required|numeric|between:1,5',
+                'channel_based' => true,
+            ], [
+                'name'          => 'show_products',
+                'title'         => 'Number of Products to Show',
+                'type'          => 'text',
+                'validation'    => 'required|numeric|between:1,5',
+                'channel_based' => true,
+            ], [
+                'name'          => 'display_terms_toggle',
+                'title'         => 'Display Search Terms',
+                'type'          => 'boolean',
+                'channel_based' => true,
+            ], [
+                'name'          => 'display_product_toggle',
+                'title'         => 'Display Products',
+                'type'          => 'boolean',
+                'channel_based' => true,
+            ], [
+                'name'          => 'display_categories_toggle',
+                'title'         => 'Display Categories',
+                'type'          => 'boolean',
+                'channel_based' => true,
+            ],
+        ],
+    ],
 ];

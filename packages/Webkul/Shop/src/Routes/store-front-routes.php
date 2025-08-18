@@ -9,6 +9,7 @@ use Webkul\Shop\Http\Controllers\ProductController;
 use Webkul\Shop\Http\Controllers\ProductsCategoriesProxyController;
 use Webkul\Shop\Http\Controllers\SearchController;
 use Webkul\Shop\Http\Controllers\SubscriptionController;
+use Webkul\Shop\Http\Controllers\SuggestionController;
 
 /**
  * CMS pages.
@@ -78,3 +79,7 @@ Route::controller(ProductController::class)->group(function () {
  */
 Route::get('booking-slots/{id}', [BookingProductController::class, 'index'])
     ->name('shop.booking-product.slots.index');
+
+Route::controller(SuggestionController::class)->group(function () {
+    Route::get('/ajax-search', 'search')->name('search_suggestion.search.index');
+});

@@ -577,4 +577,26 @@ class ProductRepository extends Repository
 
         return $query->max('min_price') ?? 0;
     }
+
+    /**
+     * Search products by term with search engine support.
+     *
+     * @param  int  $productLimit
+     */
+    public function searchProductByTerm(string $term)
+    {
+        if ($this->searchEngine === 'elastic') {
+            $searchData = $this->elasticSearchRepository->searchByTerm($term);
+
+            return [
+                'data' => collect($searchData)->map(fn ($hit) => [
+                    'name'        => $hit['_source']['name'] ?? null,
+                    'slug'        => $hit['_source']['url_key'] ?? null,
+                    'sku'         => $hit['_source']['sku'] ?? null,
+                    'category_id' => $hit['_source']['category_ids'][0] ?? null,
+                    'base_image'  => $hit['_source']['base_image'] ?? null,
+                ])->all(),
+            ];
+        }
+    }
 }

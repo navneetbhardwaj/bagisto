@@ -201,34 +201,36 @@
     </div>
 
     {!! view_render_event('bagisto.shop.components.layouts.header.mobile.search.before') !!}
-
-    <!-- Serach Catalog Form -->
-    <form action="{{ route('shop.search.index') }}" class="flex w-full items-center">
-        <label
-            for="organic-search"
-            class="sr-only"
-        >
-            @lang('shop::app.components.layouts.header.mobile.search')
-        </label>
-
-        <div class="relative w-full">
-            <div class="icon-search pointer-events-none absolute top-3 flex items-center text-2xl max-md:text-xl max-sm:top-2.5 ltr:left-3 rtl:right-3"></div>
-
-            <input
-                type="text"
-                class="block w-full rounded-xl border border-['#E3E3E3'] px-11 py-3.5 text-sm font-medium text-gray-900 max-md:rounded-lg max-md:px-10 max-md:py-3 max-md:font-normal max-sm:text-xs"
-                name="query"
-                value="{{ request('query') }}"
-                placeholder="@lang('shop::app.components.layouts.header.mobile.search-text')"
-                required
+    @if (core()->getConfigData('general.search.settings.status'))
+        @include('shop::search.suggestion')
+    @else
+        <!-- Serach Catalog Form -->
+        <form action="{{ route('shop.search.index') }}" class="flex w-full items-center">
+            <label
+                for="organic-search"
+                class="sr-only"
             >
+                @lang('shop::app.components.layouts.header.mobile.search')
+            </label>
 
-            @if (core()->getConfigData('catalog.products.settings.image_search'))
-                @include('shop::search.images.index')
-            @endif
-        </div>
-    </form>
+            <div class="relative w-full">
+                <div class="icon-search pointer-events-none absolute top-3 flex items-center text-2xl max-md:text-xl max-sm:top-2.5 ltr:left-3 rtl:right-3"></div>
 
+                <input
+                    type="text"
+                    class="block w-full rounded-xl border border-['#E3E3E3'] px-11 py-3.5 text-sm font-medium text-gray-900 max-md:rounded-lg max-md:px-10 max-md:py-3 max-md:font-normal max-sm:text-xs"
+                    name="query"
+                    value="{{ request('query') }}"
+                    placeholder="@lang('shop::app.components.layouts.header.mobile.search-text')"
+                    required
+                >
+
+                @if (core()->getConfigData('catalog.products.settings.image_search'))
+                    @include('shop::search.images.index')
+                @endif
+            </div>
+        </form>
+    @endif
     {!! view_render_event('bagisto.shop.components.layouts.header.mobile.search.after') !!}
 </div>
 

@@ -54,45 +54,49 @@
 
         <!-- Search Bar Container -->
         <div class="relative w-full">
-            <form
-                action="{{ route('shop.search.index') }}"
-                class="flex max-w-[445px] items-center"
-                role="search"
-            >
-                <label
-                    for="organic-search"
-                    class="sr-only"
+            @if (core()->getConfigData('general.search.settings.status'))
+                @include('shop::search.suggestion')
+            @else
+                <form
+                    action="{{ route('shop.search.index') }}"
+                    class="flex max-w-[445px] items-center"
+                    role="search"
                 >
-                    @lang('shop::app.components.layouts.header.desktop.bottom.search')
-                </label>
+                    <label
+                        for="organic-search"
+                        class="sr-only"
+                    >
+                        @lang('shop::app.components.layouts.header.desktop.bottom.search')
+                    </label>
 
-                <div class="icon-search pointer-events-none absolute top-2.5 flex items-center text-xl ltr:left-3 rtl:right-3"></div>
+                    <div class="icon-search pointer-events-none absolute top-2.5 flex items-center text-xl ltr:left-3 rtl:right-3"></div>
 
-                <input
-                    type="text"
-                    name="query"
-                    value="{{ request('query') }}"
-                    class="block w-full rounded-lg border border-transparent bg-zinc-100 px-11 py-3 text-xs font-medium text-gray-900 transition-all hover:border-gray-400 focus:border-gray-400"
-                    minlength="{{ core()->getConfigData('catalog.products.search.min_query_length') }}"
-                    maxlength="{{ core()->getConfigData('catalog.products.search.max_query_length') }}"
-                    placeholder="@lang('shop::app.components.layouts.header.desktop.bottom.search-text')"
-                    aria-label="@lang('shop::app.components.layouts.header.desktop.bottom.search-text')"
-                    aria-required="true"
-                    pattern="[^\\]+"
-                    required
-                >
+                    <input
+                        type="text"
+                        name="query"
+                        value="{{ request('query') }}"
+                        class="block w-full rounded-lg border border-transparent bg-zinc-100 px-11 py-3 text-xs font-medium text-gray-900 transition-all hover:border-gray-400 focus:border-gray-400"
+                        minlength="{{ core()->getConfigData('catalog.products.search.min_query_length') }}"
+                        maxlength="{{ core()->getConfigData('catalog.products.search.max_query_length') }}"
+                        placeholder="@lang('shop::app.components.layouts.header.desktop.bottom.search-text')"
+                        aria-label="@lang('shop::app.components.layouts.header.desktop.bottom.search-text')"
+                        aria-required="true"
+                        pattern="[^\\]+"
+                        required
+                    >
 
-                <button
-                    type="submit"
-                    class="hidden"
-                    aria-label="@lang('shop::app.components.layouts.header.desktop.bottom.submit')"
-                >
-                </button>
+                    <button
+                        type="submit"
+                        class="hidden"
+                        aria-label="@lang('shop::app.components.layouts.header.desktop.bottom.submit')"
+                    >
+                    </button>
 
-                @if (core()->getConfigData('catalog.products.settings.image_search'))
-                    @include('shop::search.images.index')
-                @endif
-            </form>
+                    @if (core()->getConfigData('catalog.products.settings.image_search'))
+                        @include('shop::search.images.index')
+                    @endif
+                </form>
+            @endif
         </div>
 
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.search_bar.after') !!}
@@ -298,7 +302,7 @@
                     class="pointer-events-none absolute top-[78px] z-[1] max-h-[580px] w-max max-w-[1260px] translate-y-1 overflow-auto overflow-x-auto border border-b-0 border-l-0 border-r-0 border-t border-[#F3F3F3] bg-white p-9 opacity-0 shadow-[0_6px_6px_1px_rgba(0,0,0,.3)] transition duration-300 ease-out group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-hover:duration-200 group-hover:ease-in ltr:-left-9 rtl:-right-9"
                     v-if="category.children && category.children.length"
                 >
-                    <div class="flex justify-between gap-x-[70px]">
+                    <div class="flex justify-between gap-x-[70px] suggestion">
                         <div
                             class="grid w-full min-w-max max-w-[150px] flex-auto grid-cols-[1fr] content-start gap-5"
                             v-for="pairCategoryChildren in pairCategoryChildren(category)"
